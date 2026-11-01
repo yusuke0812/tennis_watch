@@ -1,0 +1,18 @@
+# 杉並区テニスの空き枠先着受付（利用日の1カ月前 7:00）の前夜リマインド。杉並のサイトにはアクセスしない
+# cron は UTC: 12:00 UTC = 21:00 JST
+name: suginami_reminder
+on:
+  schedule:
+    - cron: "0 12 * * *"
+  workflow_dispatch:
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 suginami_reminder.py
+        env:
+          LINE_TOKEN: ${{ secrets.LINE_TOKEN }}
+          LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
